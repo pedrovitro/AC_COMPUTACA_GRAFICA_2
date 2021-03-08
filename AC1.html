@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-    <title>Babylon.js sample code</title>
+    <title>AC 1 Keyboard</title>
 
     <!-- Babylon.js -->
     <script src="https://code.jquery.com/pep/0.4.2/pep.min.js"></script>
@@ -61,20 +61,94 @@
             camera.attachControl(canvas, true);
             const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0));
 
-            const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 10, height: 10 });
-            ground.isPickable = false;
+            //const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 10, height: 10 });
+           // ground.isPickable = false;
 
             managerEvents();
 
-            noteDo = new Note("do", "/assets/do.wav");
-            noteDo.box.position.y = 0.5;
 
-            noteRe = new Note("re", "/assets/re.wav");
-            noteRe.box.position.y = 0.5;
-            noteRe.box.position.x = 2;
+            //CRIAR BASE E APLICAR TEXTURA
+            var base = BABYLON.MeshBuilder.CreateBox("base",{height: 1, width: 10, depth:5}, scene);
+            base.position.x = -0.5;
+            base.position.z = 3.75;
 
-            notes.set("do",noteDo);
-            notes.set("re",noteRe);
+            //CRIAR AS NOTAS
+            //PRIMEIRA OITAVA
+            noteDo1 = new Note("do1", "316899__jaz-the-man-2__do-stretched.wav", scene);
+            noteDo1.box.position.x = -4.5;
+
+
+           
+            noteRe1 = new Note("re1", "316900__jaz-the-man-2__do-stretched-octave.wav");
+            noteRe1.box.position.x = -4;
+
+            noteMi1 = new Note("mi1", "/assets/re.wav");
+            noteMi1.box.position.x = -3.5;
+
+            noteFa1 = new Note("fa1", "/assets/re.wav");
+            noteFa1.box.position.x = -3;
+
+            noteSol1 = new Note("sol1", "/assets/re.wav");
+            noteSol1.box.position.x = -2.5;
+
+            noteLa1 = new Note("la1", "/assets/re.wav");
+            noteLa1.box.position.x = -2;
+
+            noteSi1 = new Note("si1", "/assets/re.wav");
+            noteSi1.box.position.x = -1.5;
+
+
+             //SEGUNDA OITAVA
+            noteDo2 = new Note("do2", "316899__jaz-the-man-2__do-stretched.wav", scene);
+            noteDo2.box.position.x = -1;
+
+           
+            noteRe2 = new Note("re2", "316900__jaz-the-man-2__do-stretched-octave.wav");
+            noteRe2.box.position.x = -0.5;
+
+            noteMi2 = new Note("mi2", "/assets/re.wav");
+            noteMi2.box.position.x = 0;
+
+            noteFa2 = new Note("fa2", "/assets/re.wav");
+            noteFa2.box.position.x = 0.5;
+
+            noteSol2 = new Note("sol2", "/assets/re.wav");
+            noteSol2.box.position.x = 1;
+
+            noteLa2 = new Note("la2", "/assets/re.wav");
+            noteLa2.box.position.x = 1.5;
+
+            noteSi2 = new Note("si2", "/assets/re.wav");
+            noteSi2.box.position.x = 2;
+
+            //SUSTENIDOS
+            noteDoS1 = new Note("dos1", "/assets/do.wav");
+            noteDoS1.box1.position.y = 0.5;
+            noteDoS1.box1.position.x = -4.25;
+            noteDoS1.box1.position.z = -0.25;
+
+
+
+
+
+
+            notes.set("do1",noteDo1);
+            notes.set("re1",noteRe1);
+            notes.set("mi1",noteMi1);
+            notes.set("fa1",noteFa1);
+            notes.set("sol1",noteSol1);
+            notes.set("la1",noteLa1);
+            notes.set("si1",noteSi1);
+
+            notes.set("do2",noteDo2);
+            notes.set("re2",noteRe2);
+            notes.set("mi2",noteMi2);
+            notes.set("fa2",noteFa2);
+            notes.set("sol2",noteSol2);
+            notes.set("la2",noteLa2);
+            notes.set("si2",noteSi2);
+
+            notes.set("dos1",noteDoS1);
 
             return scene;
         };
@@ -125,24 +199,34 @@
 
                 keyFrames.push({
                     frame: 0,
-                    value: 0.5
+                    value: 0
                 });
 
                 keyFrames.push({
                     frame: 5,
-                    value: 0.0
+                    value: -0.5
                 });
 
                 keyFrames.push({
                     frame: 10,
-                    value: 0.5
+                    value: 0
                 });
 
                 this.ySlide.setKeys(keyFrames);
 
+                var whiteMaterial = new BABYLON.StandardMaterial("myWhiteMaterial", scene);
+                whiteMaterial.diffuseColor = new BABYLON.Color3(0,1,1);
+                var blackMaterial = new BABYLON.StandardMaterial("myBlackMaterial", scene);
+                blackMaterial.diffuseColor = new BABYLON.Color3(0,0,0);
+
                 // Load the sound, give it time to load and play it every 3 seconds
                 this.note = new BABYLON.Sound(noteName, noteUrl, scene);
-                this.box = BABYLON.MeshBuilder.CreateBox(noteName, {});
+               
+                this.box = BABYLON.MeshBuilder.CreateBox(noteName,{height: 1, width: 0.5, depth: 2.5}, scene);
+                this.box.material = whiteMaterial;
+
+                this.box1 = BABYLON.MeshBuilder.CreateBox(noteName,{height: 0.5, width: 0.5, depth:1.5}, scene);
+                this.box1.material = blackMaterial;
             }
 
             play() {
