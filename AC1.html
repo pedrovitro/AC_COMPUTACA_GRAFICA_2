@@ -45,10 +45,12 @@
     <script>
 
 //ITENS FALTANTES
-//colcoar as texturas tanto nas notas como no pad em cima
-//fazer os sustenidos 
-//achar os sons das teclas, substituir os que estao aqui ja 
-//resolver bug na tecla que abaixa quando aperta em uma sustenido
+//colcoar as texturas no pad em cima
+//colcoar pra sair uma glitter quandoa perta cada nota
+//criar laterais do teclaod 
+//fazer a musica tocar sozinha
+//resolver bug da criação das notas no x=0
+
 
         var canvas = document.getElementById("renderCanvas");
 
@@ -67,10 +69,19 @@
             camera.attachControl(canvas, true);
             const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0));
 
-            //const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 10, height: 10 });
-           // ground.isPickable = false;
+            const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 10, height: 10 });
+            ground.position.y = -0.5;
+            ground.isPickable = false;
 
             managerEvents();
+
+
+            //COLOCAR TEXTURA NA PARTE DE CIMA DO KEYBOARD
+            var keyBoard = new BABYLON.StandardMaterial("keyBoard", scene);
+            keyBoard.diffuseTexture = new BABYLON.Texture("C:/Users/pedro/Desktop/Faculdade/FACENS/SEMESTRE 7/COMPUTAÇÃO GRÁFICA 2/AC/keyboard.jpg", scene);
+            keyBoard.specularTexture = new BABYLON.Texture("C:/Users/pedro/Desktop/Faculdade/FACENS/SEMESTRE 7/COMPUTAÇÃO GRÁFICA 2/AC/keyboard.jpg", scene);
+            keyBoard.emissiveTexture = new BABYLON.Texture("C:/Users/pedro/Desktop/Faculdade/FACENS/SEMESTRE 7/COMPUTAÇÃO GRÁFICA 2/AC/keyboard.jpg", scene);
+            keyBoard.ambientTexture = new BABYLON.Texture("C:/Users/pedro/Desktop/Faculdade/FACENS/SEMESTRE 7/COMPUTAÇÃO GRÁFICA 2/AC/keyboard.jpg", scene);
 
 
             //CRIAR BASE E APLICAR TEXTURA
@@ -78,62 +89,97 @@
             base.position.x = -0.5;
             base.position.z = 3.75;
 
+            base.material = keyBoard;
+
             //CRIAR AS NOTAS
             //PRIMEIRA OITAVA
-            noteDo1 = new Note("do1", "316899__jaz-the-man-2__do-stretched.wav", scene);
+            noteDo1 = new Note("do1", "Notes/c3.wav", scene);
             noteDo1.box.position.x = -4.5;
 
-
-           
-            noteRe1 = new Note("re1", "316900__jaz-the-man-2__do-stretched-octave.wav");
+            noteRe1 = new Note("re1", "Notes/d3.wav");
             noteRe1.box.position.x = -4;
 
-            noteMi1 = new Note("mi1", "/assets/re.wav");
+            noteMi1 = new Note("mi1", "Notes/e3.wav");
             noteMi1.box.position.x = -3.5;
 
-            noteFa1 = new Note("fa1", "/assets/re.wav");
+            noteFa1 = new Note("fa1", "Notes/f3.wav");
             noteFa1.box.position.x = -3;
 
-            noteSol1 = new Note("sol1", "/assets/re.wav");
+            noteSol1 = new Note("sol1", "Notes/g3.wav");
             noteSol1.box.position.x = -2.5;
 
-            noteLa1 = new Note("la1", "/assets/re.wav");
+            noteLa1 = new Note("la1", "Notes/a4.wav");
             noteLa1.box.position.x = -2;
 
-            noteSi1 = new Note("si1", "/assets/re.wav");
+            noteSi1 = new Note("si1", "Notes/b4.wav");
             noteSi1.box.position.x = -1.5;
 
 
              //SEGUNDA OITAVA
-            noteDo2 = new Note("do2", "316899__jaz-the-man-2__do-stretched.wav", scene);
+            noteDo2 = new Note("do2", "Notes/c4.wav", scene);
             noteDo2.box.position.x = -1;
 
-           
-            noteRe2 = new Note("re2", "316900__jaz-the-man-2__do-stretched-octave.wav");
+            noteRe2 = new Note("re2", "Notes/d4.wav");
             noteRe2.box.position.x = -0.5;
 
-            noteMi2 = new Note("mi2", "/assets/re.wav");
+            noteMi2 = new Note("mi2", "Notes/e4.wav");
             noteMi2.box.position.x = 0;
 
-            noteFa2 = new Note("fa2", "/assets/re.wav");
+            noteFa2 = new Note("fa2", "Notes/f4.wav");
             noteFa2.box.position.x = 0.5;
 
-            noteSol2 = new Note("sol2", "/assets/re.wav");
+            noteSol2 = new Note("sol2", "Notes/g4.wav");
             noteSol2.box.position.x = 1;
 
-            noteLa2 = new Note("la2", "/assets/re.wav");
+            noteLa2 = new Note("la2", "Notes/a5.wav");
             noteLa2.box.position.x = 1.5;
 
-            noteSi2 = new Note("si2", "/assets/re.wav");
+            noteSi2 = new Note("si2", "Notes/b5.wav");
             noteSi2.box.position.x = 2;
 
+            noteDo3 = new Note("do3", "Notes/c5.wav");
+            noteDo3.box.position.x = 2.5;
+
             //SUSTENIDOS
-            noteDoS1 = new Note("dos1", "/assets/do.wav");
-            noteDoS1.box1.position.y = 0.5;
+            noteDoS1 = new Note("dos1", "Notes/c-3.wav");  
             noteDoS1.box1.position.x = -4.25;
-            noteDoS1.box1.position.z = -0.25;
+            noteDoS1.box1.position.z = 0.5;
 
+            noteReS1 = new Note("res1", "Notes/d-3.wav");  
+            noteReS1.box1.position.x = -3.75;
+            noteReS1.box1.position.z = 0.5;
 
+            noteFaS1 = new Note("fas1", "Notes/f-3.wav");  
+            noteFaS1.box1.position.x = -2.75;
+            noteFaS1.box1.position.z = 0.5;
+            
+            noteSolS1 = new Note("sols1", "Notes/g-3.wav");  
+            noteSolS1.box1.position.x = -2.25;
+            noteSolS1.box1.position.z = 0.5;
+
+            noteLaS1 = new Note("las1", "Notes/a-4.wav");  
+            noteLaS1.box1.position.x = -1.75;
+            noteLaS1.box1.position.z = 0.5;
+
+            noteDoS2 = new Note("dos2", "Notes/c-4.wav");  
+            noteDoS2.box1.position.x = -0.75;
+            noteDoS2.box1.position.z = 0.5;
+
+            noteReS2 = new Note("res2", "Notes/d-4.wav");  
+            noteReS2.box1.position.x = -0.25;
+            noteReS2.box1.position.z = 0.5;
+
+            noteFaS2 = new Note("fas2", "Notes/f-4.wav");  
+            noteFaS2.box1.position.x = 0.75;
+            noteFaS2.box1.position.z = 0.5;
+
+            noteSolS2 = new Note("sols2", "Notes/g-4.wav");  
+            noteSolS2.box1.position.x = 1.25;
+            noteSolS2.box1.position.z = 0.5;
+
+            noteLaS2 = new Note("las2", "Notes/a-5.wav");  
+            noteLaS2.box1.position.x = 1.75;
+            noteLaS2.box1.position.z = 0.5;
 
 
 
@@ -154,7 +200,23 @@
             notes.set("la2",noteLa2);
             notes.set("si2",noteSi2);
 
+            notes.set("do3",noteDo3);
+
             notes.set("dos1",noteDoS1);
+            notes.set("res1",noteReS1);
+            notes.set("fas1",noteFaS1);
+            notes.set("sols1",noteSolS1);
+            notes.set("las1",noteLaS1);
+
+            notes.set("dos2",noteDoS2);
+            notes.set("res2",noteReS2);
+            notes.set("fas2",noteFaS2);
+            notes.set("sols2",noteSolS2);
+            notes.set("las2",noteLaS2);
+
+
+
+
 
             return scene;
         };
@@ -165,6 +227,7 @@
                 if (pickResults.hit) {
                     notes.get(pickResults.pickedMesh.name).play();
                 }
+               
             }
 
         }
@@ -200,7 +263,7 @@
 
         class Note {
             constructor(noteName, noteUrl) {
-                this.ySlide = new BABYLON.Animation("ySlide", "position.y", 100, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
+                this.ySlide = new BABYLON.Animation("ySlide", "position.y", 50, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT);
                 let keyFrames = [];
 
                 keyFrames.push({
@@ -210,7 +273,7 @@
 
                 keyFrames.push({
                     frame: 5,
-                    value: -0.5
+                    value: -0.2
                 });
 
                 keyFrames.push({
@@ -221,23 +284,25 @@
                 this.ySlide.setKeys(keyFrames);
 
                 var whiteMaterial = new BABYLON.StandardMaterial("myWhiteMaterial", scene);
-                whiteMaterial.diffuseColor = new BABYLON.Color3(0,1,1);
+                whiteMaterial.diffuseColor = new BABYLON.Color3(1,1,1);
                 var blackMaterial = new BABYLON.StandardMaterial("myBlackMaterial", scene);
                 blackMaterial.diffuseColor = new BABYLON.Color3(0,0,0);
 
                 // Load the sound, give it time to load and play it every 3 seconds
                 this.note = new BABYLON.Sound(noteName, noteUrl, scene);
                
-                this.box = BABYLON.MeshBuilder.CreateBox(noteName,{height: 1, width: 0.5, depth: 2.5}, scene);
+                this.box = BABYLON.MeshBuilder.CreateBox(noteName,{height: 1, width: 0.45, depth: 2.5}, scene);
                 this.box.material = whiteMaterial;
 
-                this.box1 = BABYLON.MeshBuilder.CreateBox(noteName,{height: 0.5, width: 0.5, depth:1.5}, scene);
+                this.box1 = BABYLON.MeshBuilder.CreateBox(noteName,{height: 1.3, width: 0.45, depth:1.5}, scene);
                 this.box1.material = blackMaterial;
             }
 
-            play() {
-                this.note.play();
-                scene.beginDirectAnimation(this.box, [this.ySlide], 0, 10, true);
+            play() 
+            {
+             this.note.play();
+             scene.beginDirectAnimation(this.box, [this.ySlide], 0, 10, true);  
+             scene.beginDirectAnimation(this.box1, [this.ySlide], 0, 10, true);              
             }
         }
     </script>
