@@ -45,9 +45,8 @@
     <script>
 
 //ITENS FALTANTES
-//colcoar as texturas no pad em cima
+
 //colcoar pra sair uma glitter quandoa perta cada nota
-//criar laterais do teclaod 
 //fazer a musica tocar sozinha
 
 
@@ -71,7 +70,11 @@
 
             const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 10, height: 10 });
             ground.position.y = -0.5;
+            ground.position.x = -1;
             ground.isPickable = false;
+
+            var blackMaterial = new BABYLON.StandardMaterial("myBlackMaterial", scene);
+            blackMaterial.diffuseColor = new BABYLON.Color3(0,0,0);
 
             managerEvents();
 
@@ -79,17 +82,29 @@
             //COLOCAR TEXTURA NA PARTE DE CIMA DO KEYBOARD
             var keyBoard = new BABYLON.StandardMaterial("keyBoard", scene);
             keyBoard.diffuseTexture = new BABYLON.Texture("./keyboard.jpg", scene);
-            //keyBoard.specularTexture = new BABYLON.Texture("C:/Users/pedro/Desktop/Faculdade/FACENS/SEMESTRE 7/COMPUTAÇÃO GRÁFICA 2/AC/keyboard.jpg", scene);
-            //keyBoard.emissiveTexture = new BABYLON.Texture("C:/Users/pedro/Desktop/Faculdade/FACENS/SEMESTRE 7/COMPUTAÇÃO GRÁFICA 2/AC/keyboard.jpg", scene);
-            //keyBoard.ambientTexture = new BABYLON.Texture("C:/Users/pedro/Desktop/Faculdade/FACENS/SEMESTRE 7/COMPUTAÇÃO GRÁFICA 2/AC/keyboard.jpg", scene);
+            
+            const faceUV = [];
+            faceUV[4] = new BABYLON.Vector4(0.05, 0.5, 0.95, 0.95);
 
 
             //CRIAR BASE E APLICAR TEXTURA
-            var base = BABYLON.MeshBuilder.CreateBox("base",{height: 1, width: 10, depth:5}, scene);
-            base.position.x = -0.5;
-            base.position.z = 3.75;
-
+            var base = BABYLON.MeshBuilder.CreateBox("base",{faceUV: faceUV, wrap: true, height: 1, width: 10, depth: 4},scene);
+            base.position.x = -1;
+            base.position.z = 3.25;
+           
             base.material = keyBoard;
+
+
+            var lado1 = BABYLON.MeshBuilder.CreateBox("base",{height: 1, width: 1, depth: 2.5},scene);
+            lado1.position.x = -5.25;
+            lado1.position.z = 0;
+            lado1.material = blackMaterial;
+
+
+            var lado2 = BABYLON.MeshBuilder.CreateBox("base",{height: 1, width: 1, depth: 2.5},scene);
+            lado2.position.x = 3.25;
+            lado2.position.z = 0;
+            lado2.material = blackMaterial;
 
             //CRIAR AS NOTAS
             //PRIMEIRA OITAVA
