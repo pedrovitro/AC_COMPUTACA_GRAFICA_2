@@ -77,6 +77,7 @@
             blackMaterial.diffuseColor = new BABYLON.Color3(0,0,0);
 
             managerEvents();
+            
 
 
             //COLOCAR TEXTURA NA PARTE DE CIMA DO KEYBOARD
@@ -231,8 +232,12 @@
             notes.set("sols2",noteSolS2);
             notes.set("las2",noteLaS2);
             
+            
 
-
+            var autoplay = BABYLON.MeshBuilder.CreateBox("autoplay",{height: 1, width: 1, depth: 1},scene);
+            autoplay.position.x = 0;
+            autoplay.position.z = -3;
+            autoplay.material = blackMaterial;          
 
 
 
@@ -245,6 +250,33 @@
                 if (pickResults.hit) {
                     console.log(pickResults.pickedMesh.name);
                     notes.get(pickResults.pickedMesh.name).play();
+
+                }
+                //AUTOPLAY!!!!!!!!!!!!!!
+                  if(pickResults.hit && pickResults.pickedMesh.name == 'autoplay')
+                {
+                    noteSol1.play();
+                    //noteSol1.stop();
+                
+                    noteLa1.play();
+                   // noteLa1.stop();
+                  
+                    /*
+                    noteSi1.play();
+                    noteSi1.pause();
+
+                    noteRe2.play();
+                    noteRe2.pause();
+
+                    noteRe2.play();
+                    noteRe2.pause();
+
+                    noteSi1.play();
+                    noteSi1.pause();
+
+                    noteDo2.play();
+                    noteDo2.pause();
+                    */
                 }
                
             }
@@ -279,6 +311,68 @@
             engine.resize();
         });
 
+        //EMITIR FOGUINHO QUANDO CLICA EM ALGUMA TECLA!!!!!!!!!!!!
+        function particle (x,y,z)
+        {
+            x=x;
+            y=y;
+            z=z;
+                // Create a particle system
+                 var particleSystem = new BABYLON.ParticleSystem("particles", 5000, scene);
+
+                //Texture of each particle
+                particleSystem.particleTexture = new BABYLON.Texture("textures/flare.png", scene);
+
+                // Where the particles come from
+                particleSystem.emitter = new BABYLON.Vector3(x, y, 0); // the starting object, the emitter
+                particleSystem.minEmitBox = new BABYLON.Vector3(1, 0, 0); // Starting all from
+                particleSystem.maxEmitBox = new BABYLON.Vector3(1, 0, 0); // To...
+
+                /*
+                particleSystem.emitter = new BABYLON.Vector3(x, y, z); // the starting object, the emitter
+                particleSystem.minEmitBox = new BABYLON.Vector3(x-1, y, z); // Starting all from
+                particleSystem.maxEmitBox = new BABYLON.Vector3(x+1, y, z); // To...
+                */
+
+                // Colors of all particles
+                particleSystem.color1 = new BABYLON.Color4(0.7, 0.8, 1.0, 1.0);
+                particleSystem.color2 = new BABYLON.Color4(0.2, 0.5, 1.0, 1.0);
+                particleSystem.colorDead = new BABYLON.Color4(0, 0, 0.2, 0.0);
+
+                // Size of each particle (random between...
+                particleSystem.minSize = 0.1;
+                particleSystem.maxSize = 0.5;
+
+                // Life time of each particle (random between...
+                particleSystem.minLifeTime = 2;
+                particleSystem.maxLifeTime = 3.5;
+
+                // Emission rate
+                particleSystem.emitRate = 150;
+
+                // Blend mode : BLENDMODE_ONEONE, or BLENDMODE_STANDARD
+                particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
+
+                // Set the gravity of all particles
+                particleSystem.gravity = new BABYLON.Vector3(0, -9.81, 0);
+
+                // Direction of each particle after it has been emitted
+                particleSystem.direction1 = new BABYLON.Vector3(-2, 8, 2);
+                particleSystem.direction2 = new BABYLON.Vector3(2, 8, -2);
+
+                // Angular speed, in radians
+                particleSystem.minAngularSpeed = 0;
+                particleSystem.maxAngularSpeed = Math.PI;
+
+                // Speed
+                particleSystem.minEmitPower = 1;
+                particleSystem.maxEmitPower = 3;
+                particleSystem.updateSpeed = 0.025;
+
+                // Start the particle system
+                particleSystem.start();
+        }
+       
 
         class Note {
             constructor(noteName, noteUrl) {
@@ -318,7 +412,7 @@
             {
              this.note.play();
              scene.beginDirectAnimation(this.box, [this.ySlide], 0, 10, true);  
-             scene.beginDirectAnimation(this.box1, [this.ySlide], 0, 10, true);              
+             particle(this.note.x, this.note.y, this.note.z);              
             }
         }
         
@@ -362,6 +456,12 @@
              scene.beginDirectAnimation(this.box1, [this.ySlide], 0, 10, true);              
             }
         }
+
+        //como faz pra toar uma de cada vez?
+
+        
+        
+            
     </script>
 </body>
 
